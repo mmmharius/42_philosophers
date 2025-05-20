@@ -12,10 +12,7 @@
 
 #include "philo.h"
 
-// Point d'entrée du programme
-// Initialise les données et les threads
-// Lance le moniteur et attend la fin
-// Libère les ressources avant de quitter
+
 int	main(int argc, char **argv)
 {
 	t_data		data;

@@ -12,10 +12,23 @@
 
 #include "../philo.h"
 
-// Surveille l'état des philosophes
-// Vérifie s'ils sont morts de faim
-// Arrête la simulation si un philosophe meurt
-// Affiche l'événement et active le drapeau stop
+int	all_philos_full(t_data *d)
+{
+	int	i;
+	int	full_count;
+
+	if (d->must_eat < 0)
+		return (0);
+	full_count = 0;
+	i = 0;
+	while (i < d->nb_philos)
+	{
+		if (d->philos[i].meals_eaten >= d->must_eat)
+			full_count++;
+		i++;
+	}
+	return (full_count == d->nb_philos);
+}
 
 void	*monitor_routine(void *arg)
 {
@@ -33,8 +46,8 @@ void	*monitor_routine(void *arg)
 			if (timestamp > d->time_to_die)
 			{
 				pthread_mutex_lock(&d->print_lock);
-				printf("%ld %d died\n",
-					get_time() - d->start_time, d->philos[i].id);
+				printf("%ld.%03ldms", timestamp / 1000, timestamp % 1000);
+				printf(" %d died\n", d->philos[i].id);
 				d->stop = true;
 				pthread_mutex_unlock(&d->print_lock);
 				return (NULL);

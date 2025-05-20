@@ -12,9 +12,6 @@
 
 #include "../philo.h"
 
-// Convertit une chaîne de caractères en entier
-// Ignore les caractères non numériques
-// Ne gère pas les erreurs ni les signes
 int	ft_atoi(const char *str)
 {
 	int	res;
@@ -28,9 +25,6 @@ int	ft_atoi(const char *str)
 	return (res);
 }
 
-// Initialise les structures et paramètres de base
-// Alloue mémoire et initialise mutexes
-// Remplit les structures des philosophes
 int	init_philosophers(t_data *data)
 {
 	int	i;
@@ -49,9 +43,6 @@ int	init_philosophers(t_data *data)
 	return (0);
 }
 
-// Initialise la simulation et alloue les ressources
-// Vérifie les arguments et prépare les structures
-// Retourne 1 en cas d'erreur, 0 si succès
 int	init_all(t_data *data, int argc, char **argv)
 {
 	int	i;

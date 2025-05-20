@@ -12,10 +12,6 @@
 
 #include "../philo.h"
 
-// Routine principale de chaque philosophe
-// Pense, prend les fourchettes, mange puis dort
-// S'arrête si la simulation est terminée
-// Prend les fourchettes dans un ordre alterné
 void	*philo_routine(void *arg)
 {
 	t_philo	*p;
