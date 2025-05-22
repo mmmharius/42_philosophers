@@ -5,14 +5,29 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/15 14:59:18 by mpapin            #+#    #+#             */
-/*   Updated: 2025/04/15 14:59:18 by mpapin           ###   ########.fr       */
+/*   Created: 2025/05/22 22:44:48 by mpapin            #+#    #+#             */
+/*   Updated: 2025/05/22 22:49:27 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../philo.h"
 
-long	get_time(void)
+#include "philo.h"
+
+int	is_dead(t_philo *philo, int nb)
+{
+	pthread_mutex_lock(&philo->info->dead);
+	if (nb)
+		philo->info->t_stop = 1;
+	if (philo->info->t_stop)
+	{
+		pthread_mutex_unlock(&philo->info->dead);
+		return (1);
+	}
+	pthread_mutex_unlock(&philo->info->dead);
+	return (0);
+}
+
+long long	timestamp(void)
 {
 	struct timeval	tv;
 
@@ -20,47 +35,15 @@ long	get_time(void)
 	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
 }
 
-void	usleep_custom(long time_in_ms)
+void	print(t_philo *philo, char *str)
 {
-	long	start;
+	long int	time;
 
-	start = get_time();
-	while ((get_time() - start) < time_in_ms)
-		usleep(500);
-}
-
-void	print_state(t_philo *p, char *msg)
-{
-	t_data	*d;
-	long	timestamp;
-
-	d = p->data;
-	pthread_mutex_lock(&d->print_lock);
-	if (!d->stop)
-	{
-		timestamp = get_time() - d->start_time;
-		printf("%ld.%03ldms ", timestamp / 1000, timestamp % 1000);
-		printf("%2d ", p->id);
-		printf("%s\n", msg);
-	}
-	pthread_mutex_unlock(&d->print_lock);
-}
-
-void	cleanup(t_data *data)
-{
-	int	i;
-
-	if (data->forks)
-	{
-		i = 0;
-		while (i < data->nb_philos)
-		{
-			pthread_mutex_destroy(&data->forks[i]);
-			i++;
-		}
-		free(data->forks);
-	}
-	if (data->philos)
-		free(data->philos);
-	pthread_mutex_destroy(&data->print_lock);
+	pthread_mutex_lock(&(philo->info->print));
+	time = timestamp() - philo->info->t_start;
+	if (!philo->info->t_stop && time >= 0 \
+			&& time <= INT_MAX && !is_dead(philo, 0))
+		printf("%lld %d%s\n", timestamp() - philo->info->t_start,
+				 philo->id, str);
+	pthread_mutex_unlock(&(philo->info->print));
 }

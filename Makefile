@@ -1,27 +1,30 @@
-NAME = philo
+NAME        = philo
+CC          = cc
+CFLAGS      = -Wall -Wextra -Werror -O3 -g3
+INCLUDES    = -I.
 
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror -pthread
+SRC         = main.c \
+              src/init.c src/philo.c src/utils.c \
+              utils/utils.c
 
-SRC_DIR = src
-
-SRCS = main.c \
-	   $(SRC_DIR)/init.c \
-	   $(SRC_DIR)/routine.c \
-	   $(SRC_DIR)/utils.c \
-	   $(SRC_DIR)/monitor.c
-
-OBJS = $(SRCS:.c=.o)
+OBJ         = $(SRC:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS)
+$(NAME): $(OBJ)
+	@echo "Linking $(NAME)"
+	$(CC) $(OBJ) -o $(NAME)
+
+$(OBJ): %.o: %.c
+	@echo "Compiling $<"
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
-	rm -f $(OBJS)
+	rm -f $(OBJ)
 
 fclean: clean
 	rm -f $(NAME)
 
 re: fclean all
+
+.PHONY: all clean fclean re
