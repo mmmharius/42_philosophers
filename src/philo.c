@@ -6,7 +6,7 @@
 /*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 22:44:56 by mpapin            #+#    #+#             */
-/*   Updated: 2025/05/22 22:44:58 by mpapin           ###   ########.fr       */
+/*   Updated: 2025/05/26 14:47:21 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,7 @@ void	*philo_life(void *phi)
 		{
 			pthread_mutex_lock(&philo->info->stop);
 			if (++philo->info->philo_nbeat == philo->info->nb_philo)
-			{
-				pthread_mutex_unlock(&philo->info->stop);
 				is_dead(philo, 2);
-			}
 			pthread_mutex_unlock(&philo->info->stop);
 			return (NULL);
 		}

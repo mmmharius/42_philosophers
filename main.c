@@ -6,7 +6,7 @@
 /*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 22:31:06 by mpapin            #+#    #+#             */
-/*   Updated: 2025/05/22 22:31:54 by mpapin           ###   ########.fr       */
+/*   Updated: 2025/05/26 14:48:35 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,7 @@ void	clear_philo(t_info *data)
 
 	i = -1;
 	while (++i < data->nb_philo)
-	{
 		pthread_mutex_destroy(&data->philo[i].fork_left);
-		pthread_mutex_destroy(data->philo[i].fork_right);
-	}
 	free(data->philo);
 	pthread_mutex_destroy(&data->print);
 	pthread_mutex_destroy(&data->stop);
@@ -36,11 +33,13 @@ int	main(int argc, char **argv)
 	data.philo = NULL;
 	if (argc != 5 && argc != 6)
 		return (0);
-	if (var_init(&data, argv) == 1)
+	if (var_init(&data, argv) != 0)
 	{
-		free(data.philo);
+		if (data.philo)
+			free(data.philo);
 		return (0);
 	}
 	philo_init(&data);
 	clear_philo(&data);
+	return (0);
 }
