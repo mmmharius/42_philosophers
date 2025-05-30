@@ -6,7 +6,7 @@
 /*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 22:44:48 by mpapin            #+#    #+#             */
-/*   Updated: 2025/05/22 22:49:27 by mpapin           ###   ########.fr       */
+/*   Updated: 2025/05/30 16:57:58 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,11 @@ int	is_dead(t_philo *philo, int nb)
 		pthread_mutex_unlock(&philo->info->dead);
 		return (1);
 	}
-	pthread_mutex_unlock(&philo->info->dead);
-	return (0);
+	else
+	{
+		pthread_mutex_unlock(&philo->info->dead);
+		return (0);
+	}
 }
 
 long long	timestamp(void)
@@ -44,6 +47,6 @@ void	print(t_philo *philo, char *str)
 	if (!philo->info->t_stop && time >= 0 \
 			&& time <= INT_MAX && !is_dead(philo, 0))
 		printf("%lld %d%s\n", timestamp() - philo->info->t_start,
-				 philo->id, str);
+			philo->id, str);
 	pthread_mutex_unlock(&(philo->info->print));
 }

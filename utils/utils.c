@@ -6,7 +6,7 @@
 /*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 22:20:32 by mpapin            #+#    #+#             */
-/*   Updated: 2025/05/22 22:46:41 by mpapin           ###   ########.fr       */
+/*   Updated: 2025/05/30 16:52:45 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,22 +47,22 @@ int	ft_isdigit(int character)
 
 int	check_arg(char **str)
 {
-    int	i;
-    int	j;
+	int	i;
+	int	j;
 
-    i = 1;
-    while (str[i])
-    {
-        j = 0;
-        while (str[i][j])
-        {
-            if (!ft_isdigit(str[i][j]))
-                return (1);
-            j++;
-        }
-        i++;
-    }
-    return (0);
+	i = 1;
+	while (str[i])
+	{
+		j = 0;
+		while (str[i][j])
+		{
+			if (!ft_isdigit(str[i][j]))
+				return (1);
+			j++;
+		}
+		i++;
+	}
+	return (0);
 }
 
 void	ft_usleep(int ms)
