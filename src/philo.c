@@ -6,7 +6,7 @@
 /*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 22:44:56 by mpapin            #+#    #+#             */
-/*   Updated: 2025/05/26 14:47:21 by mpapin           ###   ########.fr       */
+/*   Updated: 2025/06/02 01:28:45 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,18 @@ void	*check_death(void *phi)
 
 	philo = (t_philo *)phi;
 	ft_usleep(philo->info->t_to_die + 1);
-	pthread_mutex_lock(&philo->info->eat);
-	pthread_mutex_lock(&philo->info->stop);
+	pthread_mutex_lock(&philo->info->m_eat);
+	pthread_mutex_lock(&philo->info->m_stop);
 	if (!is_dead(philo, 0) && timestamp() - \
-			philo->last_eat >= (long)(philo->info->t_to_die))
+			philo->last_to_eat >= (long)(philo->info->t_to_die))
 	{
-		pthread_mutex_unlock(&philo->info->eat);
-		pthread_mutex_unlock(&philo->info->stop);
+		pthread_mutex_unlock(&philo->info->m_eat);
+		pthread_mutex_unlock(&philo->info->m_stop);
 		print(philo, " died\n");
 		is_dead(philo, 1);
 	}
-	pthread_mutex_unlock(&philo->info->eat);
-	pthread_mutex_unlock(&philo->info->stop);
+	pthread_mutex_unlock(&philo->info->m_eat);
+	pthread_mutex_unlock(&philo->info->m_stop);
 	return (NULL);
 }
 
@@ -37,7 +37,7 @@ void	take_fork(t_philo *philo)
 {
 	pthread_mutex_lock(&(philo->fork_left));
 	print(philo, " has taken a fork\n");
-	if (philo->info->nb_philo == 1)
+	if (philo->info->n_philo == 1)
 	{
 		ft_usleep(philo->info->t_to_die * 2);
 		return ;
@@ -46,13 +46,13 @@ void	take_fork(t_philo *philo)
 	print(philo, " has taken a fork\n");
 }
 
-void	philo_nbeat(t_philo *philo)
+void	philo_eat(t_philo *philo)
 {
 	print(philo, " is eating\n");
-	pthread_mutex_lock(&(philo->info->eat));
-	philo->last_eat = timestamp();
-	philo->nb_eat++;
-	pthread_mutex_unlock(&(philo->info->eat));
+	pthread_mutex_lock(&(philo->info->m_eat));
+	philo->last_to_eat = timestamp();
+	philo->nb_meal++;
+	pthread_mutex_unlock(&(philo->info->m_eat));
 	ft_usleep(philo->info->t_to_eat);
 	pthread_mutex_unlock((philo->fork_right));
 	pthread_mutex_unlock(&(philo->fork_left));
@@ -74,13 +74,16 @@ void	*philo_life(void *phi)
 	while (!is_dead(philo, 0))
 	{
 		take_fork(philo);
-		philo_nbeat(philo);
-		if (philo->nb_eat == philo->info->nb_meal)
+		philo_eat(philo);
+		if (philo->nb_meal == philo->info->nb_to_eat)
 		{
-			pthread_mutex_lock(&philo->info->stop);
-			if (++philo->info->philo_nbeat == philo->info->nb_philo)
+			pthread_mutex_lock(&philo->info->m_stop);
+			if (++philo->info->philo_eat == philo->info->n_philo)
+			{
+				pthread_mutex_unlock(&philo->info->m_stop);
 				is_dead(philo, 2);
-			pthread_mutex_unlock(&philo->info->stop);
+			}
+			pthread_mutex_unlock(&philo->info->m_stop);
 			return (NULL);
 		}
 	}

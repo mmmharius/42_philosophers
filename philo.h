@@ -6,7 +6,7 @@
 /*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 22:20:52 by mpapin            #+#    #+#             */
-/*   Updated: 2025/05/30 15:49:11 by mpapin           ###   ########.fr       */
+/*   Updated: 2025/06/02 01:26:32 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,75 +22,68 @@
 # include <pthread.h>
 
 /*
-	nb_eat		= nb repas manger
-	is_eating	= bool quand mange
-	last_eat	= temps depuis last repas
-	id 			= id du philo
-	thread		= thread di philo
+	n 			= Id philo
+	nb_meal		= nb repas mange
+	is_eating	= bool si mange
+	thread		= thread associe au philo
+	last_to_eat	= temps depuis dernier repas
+	info		= lien vers t_info
+	fork_right		= fourchette droite
+	fork_left		= fourchette gauche
 */
-
 typedef struct s_philo
 {
-	int				nb_eat;
-	bool			is_eating;
-	long int		last_eat;
 	int				id;
+	int				nb_meal;
+	bool			is_eating;
 	pthread_t		thread;
+	long int		last_to_eat;
 	struct s_info	*info;
 	pthread_mutex_t	*fork_right;
 	pthread_mutex_t	fork_left;
 }	t_philo;
 
 /*
-	philo_nbeat		= total repas consomme
-	nb_philo		= nb total de philo
-	t_to_die		= temps avant meurt de faim
-	t_to_eat		= temps qui met a manger
-	t_to_sleep		= temps de repos
-	nb_meal			= nb de repas avant fin
+	philo_eat		= total repas consomme
+	n_philo			= nb total de philo
+	t_to_die			= temps avant meurt de faim
+	t_to_eat			= temps qui met a manger
+	t_to_sleep			= temps de repos
+	nb_to_eat			= nb de repas avant fin
 	stop			= bool en cours/fin
-	t_start			= timestamp du debut de la simu
+	time_start			= timestamp du debut de la simu
 	*philo			= tableau de philos
-	print			= mutex pour les print
-	stop			= mutex pour l'arret de la simu
-	eat				= mutex pour l'acces aux repas
-	dead			= mutex piur la mort
+	print			= mutex pour gerer les print
+	m_stop			= mutex pour gerer l'arret de la simu
+	m_eat			= mutex pour gerer l'acces aux repas
+	m_dead			= mutex piur gerer la mort
 */
 typedef struct s_info
 {
+	int				philo_eat;
+	int				n_philo;
 	int				t_to_die;
 	int				t_to_eat;
 	int				t_to_sleep;
-	int				philo_nbeat;
-	int				nb_philo;
-	int				nb_meal;
-	int				t_stop;
-	long int		t_start;
+	int				nb_to_eat;
+	int				stop;
+	long int		time_start;
 	t_philo			*philo;
-	pthread_mutex_t	stop;
-	pthread_mutex_t	eat;
-	pthread_mutex_t	dead;
 	pthread_mutex_t	print;
+	pthread_mutex_t	m_stop;
+	pthread_mutex_t	m_eat;
+	pthread_mutex_t	m_dead;
 }	t_info;
 
-// utils/utils.c
-int			ft_atoi(const char *str);
-int			ft_isdigit(int character);
-int			check_arg(char **str);
 void		ft_usleep(int ms);
-
-// src/init.c
 int			philo_init(t_info *data);
-int			var_init(t_info *data, char **av);
-
-// src/philo.c
-
-
-// src/utils.c
-void		print(t_philo *philo, char *str);
-long long	timestamp(void);
 void		*philo_life(void *philo);
-// void		*philo_life(void *phi);
+long long	timestamp(void);
+int			var_init(t_info *data, char **av);
+void		*philo_life(void *phi);
+void		print(t_philo *philo, char *str);
 int			is_dead(t_philo *philo, int nb);
+int			ft_isdigit(int character);
+int			ft_atoi(const char *str);
 
 #endif

@@ -4,26 +4,29 @@ CFLAGS      = -Wall -Wextra -Werror -O3 -g3
 INCLUDES    = -I.
 
 SRC         = main.c \
-              src/init.c src/philo.c src/utils.c \
-              utils/utils.c
+              src/init.c \
+              src/philo.c \
+              src/utils.c
 
 OBJ         = $(SRC:.c=.o)
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	@echo "Linking $(NAME)"
-	$(CC) $(OBJ) -o $(NAME)
+	@echo "Building project..."
+	@$(CC) $(OBJ) -o $(NAME) > /dev/null
+	@echo "Done! Executable: ./$(NAME)"
 
-$(OBJ): %.o: %.c
-	@echo "Compiling $<"
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+%.o: %.c
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@ > /dev/null
 
 clean:
-	rm -f $(OBJ)
+	@echo "cleaning .o ..."
+	@rm -f $(OBJ)
 
 fclean: clean
-	rm -f $(NAME)
+	@echo "Removing executable..."
+	@rm -f $(NAME)
 
 re: fclean all
 

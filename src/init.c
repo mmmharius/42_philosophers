@@ -6,7 +6,7 @@
 /*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 22:45:02 by mpapin            #+#    #+#             */
-/*   Updated: 2025/05/30 17:18:50 by mpapin           ###   ########.fr       */
+/*   Updated: 2025/06/02 01:26:32 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,58 +22,87 @@
 int	philo_init(t_info *data)
 {
 	int	i;
-	int	created_threads;
 
-	data->t_start = timestamp();
-	created_threads = 0;
+	data->time_start = timestamp();
 	i = -1;
-	while (++i < data->nb_philo)
+	while (++i < data->n_philo)
 	{
 		data->philo[i].id = i + 1;
-		data->philo[i].last_eat = 0;
-		data->philo[i].nb_eat = 0;
+		data->philo[i].last_to_eat = 0;
+		data->philo[i].fork_right = NULL;
 		data->philo[i].info = data;
+		data->philo[i].nb_meal = 0;
 		pthread_mutex_init(&(data->philo[i].fork_left), NULL);
-		if (i == data->nb_philo - 1)
+		if (i == data->n_philo - 1)
 			data->philo[i].fork_right = &data->philo[0].fork_left;
 		else
 			data->philo[i].fork_right = &data->philo[i + 1].fork_left;
-		if (pthread_create(&data->philo[i].thread, NULL,
-				&philo_life, &data->philo[i]) != 0)
-			break ;
-		created_threads++;
+		if (pthread_create(&data->philo[i].thread, NULL, \
+				&philo_life, &(data->philo[i])) != 0)
+			return (-1);
 	}
 	i = -1;
-	while (++i < created_threads)
-		pthread_join(data->philo[i].thread, NULL);
-	if (created_threads < data->nb_philo)
-		return (-1);
+	while (++i < data->n_philo)
+		if (pthread_join(data->philo[i].thread, NULL) != 0)
+			return (-1);
 	return (0);
 }
 
-int	var_init(t_info *data, char **argv)
+int	check_num(char **str)
+{
+	int	i;
+	int	j;
+
+	i = 1;
+	while (str[i])
+	{
+		j = 0;
+		while (str[i][j])
+		{
+			if (!ft_isdigit(str[i][j]))
+				return (1);
+			j++;
+		}
+		i++;
+	}
+	return (0);
+}
+/*
+	data->philo[i].fork_left = malloc(sizeof(pthread_mutex_t));
+	Une fourchette par philosophe
+
+	pthread_mutex_init(&data->print, NULL);
+	Sortie protege par un mutex
+
+	pthread_mutex_init(&data->m_dead, NULL);
+	Empeche la mort instant et ne mange pas en meme temps
+*/
+
+int	var_init(t_info *data, char **av)
 {
 	pthread_mutex_init(&data->print, NULL);
-	pthread_mutex_init(&data->stop, NULL);
-	pthread_mutex_init(&data->eat, NULL);
-	pthread_mutex_init(&data->dead, NULL);
-	data->t_stop = 0;
-	if (check_arg(argv))
+	pthread_mutex_init(&data->m_stop, NULL);
+	pthread_mutex_init(&data->m_eat, NULL);
+	pthread_mutex_init(&data->m_dead, NULL);
+	data->stop = 0;
+	if (check_num(av))
 		return (printf("Invalid Arguments\n"), 1);
-	data->nb_philo = ft_atoi(argv[1]);
-	if (data->nb_philo <= 0)
+	data->n_philo = ft_atoi(av[1]);
+	if (data->n_philo <= 0)
 		return (1);
-	data->t_to_die = ft_atoi(argv[2]);
-	data->t_to_eat = ft_atoi(argv[3]);
-	data->t_to_sleep = ft_atoi(argv[4]);
-	data->nb_meal = -1;
-	if (argv[5])
-		data->nb_meal = ft_atoi(argv[5]);
-	if (argv[5] && data->nb_meal == 0)
+	data->t_to_die = ft_atoi(av[2]);
+	data->t_to_eat = ft_atoi(av[3]);
+	data->t_to_sleep = ft_atoi(av[4]);
+	data->nb_to_eat = -1;
+	if (av[5])
+		data->nb_to_eat = ft_atoi(av[5]);
+	else
+		data->nb_to_eat = -1;
+	if (av[5] && data->nb_to_eat == 0)
 		return (1);
-	data->philo = malloc(sizeof(t_philo) * data->nb_philo);
+	data->philo = malloc(sizeof(t_philo) * data->n_philo);
 	if (!data->philo)
 		return (printf("Memory allocation failed\n"), 2);
-	data->philo_nbeat = 0;
+	data->philo_eat = 0;
 	return (0);
 }
