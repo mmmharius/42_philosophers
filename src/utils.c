@@ -6,26 +6,11 @@
 /*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 22:44:48 by mpapin            #+#    #+#             */
-/*   Updated: 2025/06/02 01:28:47 by mpapin           ###   ########.fr       */
+/*   Updated: 2025/06/02 13:22:55 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "philo.h"
-
-int	is_dead(t_philo *philo, int nb)
-{
-	pthread_mutex_lock(&philo->info->m_dead);
-	if (nb)
-		philo->info->stop = 1;
-	if (philo->info->stop)
-	{
-		pthread_mutex_unlock(&philo->info->m_dead);
-		return (1);
-	}
-	pthread_mutex_unlock(&philo->info->m_dead);
-	return (0);
-}
 
 long long	timestamp(void)
 {
