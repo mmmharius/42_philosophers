@@ -6,7 +6,7 @@
 /*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 22:20:52 by mpapin            #+#    #+#             */
-/*   Updated: 2025/06/02 01:26:32 by mpapin           ###   ########.fr       */
+/*   Updated: 2025/06/02 13:37:50 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@
 # include <pthread.h>
 
 /*
-	n 			= Id philo
-	nb_meal		= nb repas mange
-	is_eating	= bool si mange
-	thread		= thread associe au philo
-	last_to_eat	= temps depuis dernier repas
-	info		= lien vers t_info
+	n 				= Id philo
+	nb_meal			= nb repas mange
+	is_eating		= bool si mange
+	thread			= thread associe au philo
+	last_to_eat		= temps depuis dernier repas
+	info			= lien vers t_info
 	fork_right		= fourchette droite
 	fork_left		= fourchette gauche
 */
@@ -46,17 +46,17 @@ typedef struct s_philo
 /*
 	philo_eat		= total repas consomme
 	n_philo			= nb total de philo
-	t_to_die			= temps avant meurt de faim
-	t_to_eat			= temps qui met a manger
-	t_to_sleep			= temps de repos
-	nb_to_eat			= nb de repas avant fin
+	t_to_die		= temps avant meurt de faim
+	t_to_eat		= temps qui met a manger
+	t_to_sleep		= temps de repos
+	nb_to_eat		= nb de repas avant fin
 	stop			= bool en cours/fin
-	time_start			= timestamp du debut de la simu
+	time_start		= timestamp du debut du prog
 	*philo			= tableau de philos
-	print			= mutex pour gerer les print
-	m_stop			= mutex pour gerer l'arret de la simu
-	m_eat			= mutex pour gerer l'acces aux repas
-	m_dead			= mutex piur gerer la mort
+	print			= mutex pour les printd
+	m_stop			= mutex pour l'arret du prog
+	m_eat			= mutex pour l'acces aux repas
+	m_dead			= mutex pour la mort
 */
 typedef struct s_info
 {
@@ -77,7 +77,6 @@ typedef struct s_info
 
 void		ft_usleep(int ms);
 int			philo_init(t_info *data);
-void		*philo_life(void *philo);
 long long	timestamp(void);
 int			var_init(t_info *data, char **av);
 void		*philo_life(void *phi);

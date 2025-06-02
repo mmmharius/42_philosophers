@@ -6,7 +6,7 @@
 /*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 22:45:02 by mpapin            #+#    #+#             */
-/*   Updated: 2025/06/02 01:26:32 by mpapin           ###   ########.fr       */
+/*   Updated: 2025/06/02 13:28:31 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,13 @@ int	check_num(char **str)
 }
 /*
 	data->philo[i].fork_left = malloc(sizeof(pthread_mutex_t));
-	Une fourchette par philosophe
+	Une fourchette/philosophe
 
 	pthread_mutex_init(&data->print, NULL);
-	Sortie protege par un mutex
+	Sortie protect par un mutex
 
 	pthread_mutex_init(&data->m_dead, NULL);
-	Empeche la mort instant et ne mange pas en meme temps
+	Empeche la mort instante et portect de manger en meme temps
 */
 
 int	var_init(t_info *data, char **av)
