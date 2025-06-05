@@ -100,12 +100,7 @@ void	*philo_life(void *phi)
 	if (philo->info->n_philo > 1)
 	{
 		if (philo->id % 2 == 0)
-			ft_usleep(philo->info->t_to_eat);
-		else if (philo->info->n_philo % 2 == 1)
-		{
-			if (philo->id % 3 == 0)
-				ft_usleep(philo->info->t_to_eat * 2);
-		}
+			ft_usleep(philo->info->t_to_eat / 2);
 	}
 	while (!simulation_stopped(philo->info))
 	{
