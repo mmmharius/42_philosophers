@@ -18,10 +18,7 @@ void	clear_philo(t_info *data)
 
 	i = -1;
 	while (++i < data->n_philo)
-	{
 		pthread_mutex_destroy(&data->philo[i].fork_left);
-		pthread_mutex_destroy(data->philo[i].fork_right);
-	}
 	free(data->philo);
 	pthread_mutex_destroy(&data->print);
 	pthread_mutex_destroy(&data->m_stop);
@@ -41,6 +38,11 @@ int	main(int ac, char **av)
 		free(data.philo);
 		return (0);
 	}
-	philo_init(&data);
-	clear_philo(&data);
+	if (philo_init(&data) == 0)
+		clear_philo(&data);
+	else
+	{
+		free(data.philo);
+		return (1);
+	}
 }

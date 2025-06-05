@@ -66,7 +66,7 @@ typedef struct s_info
 	int				t_to_eat;
 	int				t_to_sleep;
 	int				nb_to_eat;
-	int				stop;
+	volatile int	stop;
 	long int		time_start;
 	t_philo			*philo;
 	pthread_mutex_t	print;
@@ -82,6 +82,7 @@ int			var_init(t_info *data, char **av);
 void		*philo_life(void *phi);
 void		print(t_philo *philo, char *str);
 int			is_dead(t_philo *philo, int nb);
+int			take_fork(t_philo *philo);
 int			ft_isdigit(int character);
 int			ft_atoi(const char *str);
 

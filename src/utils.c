@@ -25,11 +25,15 @@ void	print(t_philo *philo, char *str)
 	long int	time;
 
 	pthread_mutex_lock(&(philo->info->print));
-	time = timestamp() - philo->info->time_start;
-	if (!philo->info->stop && time >= 0 \
-			&& time <= INT_MAX && !is_dead(philo, 0))
-		printf("%lld"" %d%s", timestamp() - philo->info->time_start,
-			philo->id, str);
+	pthread_mutex_lock(&philo->info->m_dead);
+	if (!philo->info->stop)
+	{
+		time = timestamp() - philo->info->time_start;
+		if (time >= 0 && time <= INT_MAX)
+			printf("%lld %d%s", timestamp() - philo->info->time_start,
+				philo->id, str);
+	}
+	pthread_mutex_unlock(&philo->info->m_dead);
 	pthread_mutex_unlock(&(philo->info->print));
 }
 

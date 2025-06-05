@@ -19,16 +19,44 @@
 	pthread_mutex_init(&(data->philo[i].fork_left), NULL); fourchette -> mutex
 */
 
+void	*supervisor(void *d)
+{
+	t_info	*data;
+	int		i;
+	long	last_meal;
+
+	data = (t_info *)d;
+	while (!is_dead(&data->philo[0], 0))
+	{
+		i = -1;
+		while (++i < data->n_philo)
+		{
+			pthread_mutex_lock(&data->m_eat);
+			last_meal = data->philo[i].last_to_eat;
+			pthread_mutex_unlock(&data->m_eat);
+			if (timestamp() - last_meal >= (long)data->t_to_die)
+			{
+				print(&data->philo[i], " died\n");
+				is_dead(&data->philo[i], 1);
+				return (NULL);
+			}
+		}
+		usleep(1000);
+	}
+	return (NULL);
+}
+
 int	philo_init(t_info *data)
 {
-	int	i;
+	int			i;
+	pthread_t	supervisor_thread;
 
 	data->time_start = timestamp();
 	i = -1;
 	while (++i < data->n_philo)
 	{
 		data->philo[i].id = i + 1;
-		data->philo[i].last_to_eat = 0;
+		data->philo[i].last_to_eat = data->time_start;
 		data->philo[i].fork_right = NULL;
 		data->philo[i].info = data;
 		data->philo[i].nb_meal = 0;
@@ -41,10 +69,13 @@ int	philo_init(t_info *data)
 				&philo_life, &(data->philo[i])) != 0)
 			return (-1);
 	}
+	pthread_create(&supervisor_thread, NULL, supervisor, data);
+	pthread_join(supervisor_thread, NULL);
+	usleep(1000);
 	i = -1;
 	while (++i < data->n_philo)
-		if (pthread_join(data->philo[i].thread, NULL) != 0)
-			return (-1);
+		pthread_join(data->philo[i].thread, NULL);
+	usleep(1000);
 	return (0);
 }
 
