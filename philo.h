@@ -39,8 +39,8 @@ typedef struct s_philo
 	pthread_t		thread;
 	long int		last_to_eat;
 	struct s_info	*info;
+	pthread_mutex_t	*fork_left;
 	pthread_mutex_t	*fork_right;
-	pthread_mutex_t	fork_left;
 }	t_philo;
 
 /*
@@ -69,6 +69,7 @@ typedef struct s_info
 	volatile int	stop;
 	long int		time_start;
 	t_philo			*philo;
+	pthread_mutex_t	*forks;
 	pthread_mutex_t	print;
 	pthread_mutex_t	m_stop;
 	pthread_mutex_t	m_eat;
@@ -76,13 +77,16 @@ typedef struct s_info
 }	t_info;
 
 void		ft_usleep(int ms);
+void		ft_usleep_check(int ms, t_info *info);
 int			philo_init(t_info *data);
 long long	timestamp(void);
 int			var_init(t_info *data, char **av);
 void		*philo_life(void *phi);
 void		print(t_philo *philo, char *str);
-int			is_dead(t_philo *philo, int nb);
-int			take_fork(t_philo *philo);
+int			simulation_stopped(t_info *info);
+void		stop_simulation(t_info *info);
+int			take_forks(t_philo *philo);
+void		release_forks(t_philo *philo);
 int			ft_isdigit(int character);
 int			ft_atoi(const char *str);
 

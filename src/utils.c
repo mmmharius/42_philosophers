@@ -73,8 +73,27 @@ int	ft_isdigit(int character)
 void	ft_usleep(int ms)
 {
 	long int	time;
+	long int	current;
 
 	time = timestamp();
-	while (timestamp() - time < ms)
-		usleep(ms / 10);
+	current = time;
+	while (current - time < ms)
+	{
+		usleep(1000);
+		current = timestamp();
+	}
+}
+
+void	ft_usleep_check(int ms, t_info *info)
+{
+	long int	time;
+	long int	current;
+
+	time = timestamp();
+	current = time;
+	while (current - time < ms && !simulation_stopped(info))
+	{
+		usleep(1000);
+		current = timestamp();
+	}
 }

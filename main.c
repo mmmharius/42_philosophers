@@ -16,10 +16,15 @@ void	clear_philo(t_info *data)
 {
 	int	i;
 
-	i = -1;
-	while (++i < data->n_philo)
-		pthread_mutex_destroy(&data->philo[i].fork_left);
-	free(data->philo);
+	if (data->forks)
+	{
+		i = -1;
+		while (++i < data->n_philo)
+			pthread_mutex_destroy(&data->forks[i]);
+		free(data->forks);
+	}
+	if (data->philo)
+		free(data->philo);
 	pthread_mutex_destroy(&data->print);
 	pthread_mutex_destroy(&data->m_stop);
 	pthread_mutex_destroy(&data->m_eat);
