@@ -6,7 +6,7 @@
 /*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 22:45:02 by mpapin            #+#    #+#             */
-/*   Updated: 2025/06/06 20:58:54 by mpapin           ###   ########.fr       */
+/*   Updated: 2025/06/06 21:44:20 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	check_arg_content(char *arg)
 
 int	check_valid_args(char **argv)
 {
-	if (ft_atoi(argv[1]) > 200 || ft_atoi(argv[1]) <= 0 
+	if (ft_atoi(argv[1]) > 200 || ft_atoi(argv[1]) <= 0
 		|| check_arg_content(argv[1]) == 1)
 		return (1);
 	if (ft_atoi(argv[2]) <= 0 || check_arg_content(argv[2]) == 1)
@@ -86,57 +86,4 @@ void	init_philosophers(t_data *data)
 		data->philos[i].data = data;
 		i++;
 	}
-}
-
-void	start_dinner(t_data *data)
-{
-	int			i;
-	pthread_t	monitor;
-
-	i = 0;
-	data->start_time = get_current_time();
-	if (data->nb_meals == 0)
-		return ;
-	while (i < data->nb_philos)
-	{
-		data->philos[i].last_meal_time = get_current_time();
-		pthread_create(&data->philos[i].thread, NULL, 
-			&philo_thread, &data->philos[i]);
-		i++;
-	}
-	pthread_create(&monitor, NULL, &monitor_thread, data);
-	pthread_join(monitor, NULL);
-	i = 0;
-	while (i < data->nb_philos)
-	{
-		pthread_join(data->philos[i].thread, NULL);
-		i++;
-	}
-}
-
-void	destroy_all(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	while (i < data->nb_philos)
-	{
-		pthread_mutex_destroy(&data->forks[i]);
-		i++;
-	}
-	pthread_mutex_destroy(&data->dead_lock);
-	pthread_mutex_destroy(&data->meal_lock);
-	pthread_mutex_destroy(&data->write_lock);
-	free(data->forks);
-	free(data->philos);
-}
-
-int	init_philos(t_data *data)
-{
-	data->philos = malloc(sizeof(t_philo) * data->nb_philos);
-	if (!data->philos)
-		return (1);
-	init_forks(data);
-	init_philosophers(data);
-	return (0);
 }

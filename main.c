@@ -6,11 +6,21 @@
 /*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 22:31:06 by mpapin            #+#    #+#             */
-/*   Updated: 2025/06/06 20:54:54 by mpapin           ###   ########.fr       */
+/*   Updated: 2025/06/06 21:41:38 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	init_philos(t_data *data)
+{
+	data->philos = malloc(sizeof(t_philo) * data->nb_philos);
+	if (!data->philos)
+		return (1);
+	init_forks(data);
+	init_philosophers(data);
+	return (0);
+}
 
 int	main(int argc, char **argv)
 {

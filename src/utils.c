@@ -6,7 +6,7 @@
 /*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 22:44:48 by mpapin            #+#    #+#             */
-/*   Updated: 2025/06/06 21:10:19 by mpapin           ###   ########.fr       */
+/*   Updated: 2025/06/06 21:46:40 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,4 @@ int	ft_atoi(const char *str)
 		str++;
 	}
 	return (result * sign);
-}
-
-int	is_digit(char c)
-{
-	return (c >= '0' && c <= '9');
 }
