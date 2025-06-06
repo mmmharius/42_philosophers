@@ -6,7 +6,7 @@
 /*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 22:44:48 by mpapin            #+#    #+#             */
-/*   Updated: 2025/06/06 20:54:47 by mpapin           ###   ########.fr       */
+/*   Updated: 2025/06/06 21:10:19 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,24 +32,28 @@ void	my_usleep(long long milliseconds)
 void	print_status(t_philo *philo, char *status)
 {
 	long long	time;
+	int			is_dead;
 
+	pthread_mutex_lock(&philo->data->dead_lock);
+	is_dead = philo->data->dead;
+	pthread_mutex_unlock(&philo->data->dead_lock);
 	pthread_mutex_lock(&philo->data->write_lock);
-	time = get_current_time() - philo->data->start_time;
-	if (!dead_loop(philo->data))
+	if (!is_dead)
+	{
+		time = get_current_time() - philo->data->start_time;
 		printf("%lld %d %s\n", time, philo->id, status);
+	}
 	pthread_mutex_unlock(&philo->data->write_lock);
 }
 
 int	dead_loop(t_data *data)
 {
+	int	is_dead;
+
 	pthread_mutex_lock(&data->dead_lock);
-	if (data->dead)
-	{
-		pthread_mutex_unlock(&data->dead_lock);
-		return (1);
-	}
+	is_dead = data->dead;
 	pthread_mutex_unlock(&data->dead_lock);
-	return (0);
+	return (is_dead);
 }
 
 int	ft_atoi(const char *str)
