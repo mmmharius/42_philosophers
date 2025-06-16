@@ -10,7 +10,6 @@ SRC         = main.c \
               src/philo_actions.c \
               src/philo_monitor.c \
               src/utils.c \
-              src/utils2.c
 
 OBJ         = $(SRC:.c=.o)
 

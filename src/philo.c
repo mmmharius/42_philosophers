@@ -6,7 +6,7 @@
 /*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 22:44:56 by mpapin            #+#    #+#             */
-/*   Updated: 2025/06/06 21:44:34 by mpapin           ###   ########.fr       */
+/*   Updated: 2025/06/16 18:14:47 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,3 +81,12 @@ void	*philo_thread(void *arg)
 	}
 	return (NULL);
 }
+
+long long	get_current_time(void)
+{
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+}
+

@@ -6,19 +6,12 @@
 /*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 22:44:48 by mpapin            #+#    #+#             */
-/*   Updated: 2025/06/06 21:46:40 by mpapin           ###   ########.fr       */
+/*   Updated: 2025/06/16 18:14:49 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-long long	get_current_time(void)
-{
-	struct timeval	tv;
-
-	gettimeofday(&tv, NULL);
-	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
-}
 
 void	my_usleep(long long milliseconds)
 {
@@ -75,4 +68,9 @@ int	ft_atoi(const char *str)
 		str++;
 	}
 	return (result * sign);
+}
+
+int	is_digit(char c)
+{
+	return (c >= '0' && c <= '9');
 }
