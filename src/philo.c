@@ -6,7 +6,7 @@
 /*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 22:44:56 by mpapin            #+#    #+#             */
-/*   Updated: 2025/06/16 18:14:47 by mpapin           ###   ########.fr       */
+/*   Updated: 2025/06/16 18:18:41 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,4 +89,3 @@ long long	get_current_time(void)
 	gettimeofday(&tv, NULL);
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
-

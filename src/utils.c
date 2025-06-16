@@ -6,12 +6,11 @@
 /*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 22:44:48 by mpapin            #+#    #+#             */
-/*   Updated: 2025/06/16 18:14:49 by mpapin           ###   ########.fr       */
+/*   Updated: 2025/06/16 18:18:56 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
 
 void	my_usleep(long long milliseconds)
 {
